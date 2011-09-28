@@ -1,0 +1,52 @@
+#!/usr/bin/perl -w
+
+use strict;
+use esmith::Build::CreateLinks qw(:all);
+
+foreach (qw(
+    /etc/ssh/sshd_config
+	))
+{
+    templates2events("$_", qw(
+	console-save
+	bootstrap-console-save
+	remoteaccess-update
+	));
+}
+
+foreach (qw(
+    /etc/rssh.conf
+	))
+{
+    templates2events("$_", qw(
+	bootstrap-console-save
+	password-modify
+	remoteaccess-update
+	user-lock
+	user-create
+	user-delete
+	user-modify
+	));
+}
+
+foreach my $event (
+    "console-save",
+    "bootstrap-console-save",
+    "remoteaccess-update")
+{
+    event_link("sshd-conf", $event, "65");
+}
+
+foreach my $event (
+    "console-save",
+    "remoteaccess-update")
+{
+    safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/sshd");
+}
+
+# Set up links to daemontools. Note: /etc/init.d/sshd is now obsolete.
+safe_symlink("../daemontools", "root/etc/rc.d/init.d/supervise/sshd");
+                                                                                    
+service_link_enhanced("sshd", "S85", "7");
+safe_symlink("../init.d/supervise/sshd", "root/etc/rc.d/rc6.d/K25sshd");
+safe_symlink("../init.d/supervise/sshd", "root/etc/rc.d/rc0.d/K25sshd");

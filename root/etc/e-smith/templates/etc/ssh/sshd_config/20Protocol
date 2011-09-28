@@ -1,0 +1,4 @@
+{
+    my $protocol = $sshd{Protocol} || "2";
+    "Protocol $protocol";
+}

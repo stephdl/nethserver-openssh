@@ -1,0 +1,14 @@
+{ 
+    my $PermitRootLogin = $sshd{'PermitRootLogin'} || "no";
+    my $status = $sshd{'status'} || 'disabled';
+    $OUT .= "PermitRootLogin ";
+    if ( $status ne 'enabled' ) {
+	$OUT .= 'no';
+    } elsif ( $PermitRootLogin eq 'yes' ) {
+	$OUT .= 'yes';
+    } elsif ( $PermitRootLogin eq 'key' || $PermitRootLogin eq 'nopass' ) {
+	$OUT .= 'without-password';
+    } else {
+	$OUT .= 'no';
+    }
+}

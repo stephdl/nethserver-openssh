@@ -1,0 +1,9 @@
+{
+# Maximum number of concurrent unauthenticated connections
+# The values are start:rate:full - start is when the rate limiter
+# will kick in, rate is the percentage of new connections dropped and
+# full is when all new connections are refused
+# See sshd(1) for more details.
+    my $MaxStartups = $sshd{MaxStartups} || "10:30:60";
+    $OUT = "MaxStartups $MaxStartups";
+}

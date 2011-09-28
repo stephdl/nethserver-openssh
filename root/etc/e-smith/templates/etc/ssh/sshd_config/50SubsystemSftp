@@ -1,0 +1,11 @@
+{
+    # NOTE: This just provides a path independent way to access the sftp server
+    #       With this disabled, you can still specify a path to the sftp client
+    #       so we default to enabling sftp
+
+    my $SubsystemSftp = $sshd{"SubsystemSftp"} || "yes";
+
+    $OUT = ($SubsystemSftp eq "yes") ? 
+	"Subsystem      sftp    /usr/libexec/openssh/sftp-server" : 
+	"# The sftp Subsystem is disabled in the configuration database";
+}

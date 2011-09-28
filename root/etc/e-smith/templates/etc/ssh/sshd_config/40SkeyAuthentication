@@ -1,0 +1,5 @@
+{
+# Uncomment to disable s/key passwords
+#SkeyAuthentication no
+#KbdInteractiveAuthentication yes
+}

@@ -1,0 +1,10 @@
+{
+    my $access = $sshd{'access'} || 'private';
+
+    my $address = ($access eq "public") ? "0.0.0.0" : "$LocalIP";	
+
+    $OUT .= "ListenAddress $address";
+
+    # Another alternative is: "ListenAddress ::"
+}
+

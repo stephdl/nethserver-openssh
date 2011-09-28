@@ -1,0 +1,97 @@
+#!/usr/bin/perl -w
+
+#----------------------------------------------------------------------
+# copyright (C) 1999-2005 Mitel Networks Corporation
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
+#----------------------------------------------------------------------
+
+package esmith;
+
+use strict;
+use Errno;
+use esmith::ConfigDB;
+use esmith::util;
+
+=head1 NAME
+
+sshd-conf - action to reconfigure sshd
+
+=head1 SYNOPSIS
+
+  sshd-conf
+
+=head1 DESCRIPTION
+
+Generates the sshd host key with no passphrase.  If one already
+exists it simply makes sure the comment in the ssh_host_key is
+correct.
+
+=head1 FILES
+
+The following files are affected.
+
+  /etc/ssh/ssh_host_key
+
+=begin testing
+
+use esmith::ConfigDB;
+
+SKIP: {
+    my $db;
+
+    skip "You have to be able to read the config DB to test this", 4
+      unless $db = esmith::ConfigDB->open;
+
+    $Destruct_Ok = $db->get('testing')->prop('destruction');
+
+    SKIP: {
+        skip "sshd reconfiguration would be destructive", 7
+          unless $Destruct_Ok;
+
+        # Call ourself.
+        system $^X, $Original_File;
+        is( $@, '', 'ran myself ok' );
+
+        sleep 1;
+
+        foreach my $file (qw(
+                             /etc/ssh/ssh_host_key
+                             ) )
+        {
+            cmp_ok( -M $file, '<', 0, "$file rewritten" );
+            cmp_ok( -s $file, '>', 0, "$file is not empty" );
+        }
+    }
+}
+
+=end testing
+
+=cut
+
+my $db = esmith::ConfigDB->open_ro or die "Could not open config db";
+
+# Recomment the key in case the SystemName or DomainName changed.
+my @change = (-f "/etc/ssh/ssh_host_key") ? ("-c", "-P", "")
+                                          : ("-q", "-N", "");
+
+esmith::util::backgroundCommand (0,
+    "/usr/bin/ssh-keygen", @change, "-t", "rsa1",
+    "-f", "/etc/ssh/ssh_host_key",
+    "-C", "root@" . $db->get('SystemName')->value . "." . $db->get('DomainName')->value);
+
+exit (0);
+

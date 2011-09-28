@@ -1,0 +1,4 @@
+{ #
+  # Don't read ~/.rhosts and ~/.shosts files
+}
+IgnoreRhosts yes

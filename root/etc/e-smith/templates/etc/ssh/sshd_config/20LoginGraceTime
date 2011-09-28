@@ -1,0 +1,4 @@
+{ 
+    my $LoginGraceTime = $sshd{LoginGraceTime} || "600";
+    $OUT = "LoginGraceTime $LoginGraceTime";
+}

@@ -1,0 +1,4 @@
+{
+    my $pam = $sshd{UsePAM} || "no";
+    $OUT = "UsePAM $pam";
+}
