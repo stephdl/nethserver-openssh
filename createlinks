@@ -45,8 +45,16 @@ foreach my $event (
 }
 
 # Set up links to daemontools. Note: /etc/init.d/sshd is now obsolete.
-safe_symlink("../daemontools", "root/etc/rc.d/init.d/supervise/sshd");
                                                                                     
 service_link_enhanced("sshd", "S85", "7");
-safe_symlink("../init.d/supervise/sshd", "root/etc/rc.d/rc6.d/K25sshd");
-safe_symlink("../init.d/supervise/sshd", "root/etc/rc.d/rc0.d/K25sshd");
+
+#
+# Actions for nethserver-openssh-update event
+#
+
+my $event = "nethserver-openssh-update";
+templates2events("/etc/hosts.allow",$event);
+templates2events("/etc/rssh.conf",$event);
+templates2events("/etc/ssh/sshd_config",$event);
+event_link("sshd-conf", $event, "65");
+safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/sshd");
