@@ -57,4 +57,4 @@ templates2events("/etc/hosts.allow",$event);
 templates2events("/etc/rssh.conf",$event);
 templates2events("/etc/ssh/sshd_config",$event);
 event_link("sshd-conf", $event, "65");
-safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/sshd");
+safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/sshd");
