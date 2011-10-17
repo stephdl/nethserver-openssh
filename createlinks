@@ -41,7 +41,7 @@ foreach my $event (
     "console-save",
     "remoteaccess-update")
 {
-    safe_symlink("sighup", "root/etc/e-smith/events/$event/services2adjust/sshd");
+    safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/sshd");
 }
 
 # Set up links to daemontools. Note: /etc/init.d/sshd is now obsolete.
