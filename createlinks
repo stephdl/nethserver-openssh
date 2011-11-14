@@ -44,9 +44,6 @@ foreach my $event (
     safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/sshd");
 }
 
-# Set up links to daemontools. Note: /etc/init.d/sshd is now obsolete.
-                                                                                    
-service_link_enhanced("sshd", "S85", "7");
 
 #
 # Actions for nethserver-openssh-update event
