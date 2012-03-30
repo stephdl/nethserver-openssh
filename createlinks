@@ -8,8 +8,7 @@ templates2events("/etc/ssh/sshd_config", qw(
    nethserver-openssh-update
 ));
 
-safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/sshd") foreach my $event (qw(
-  nethserver-openssh-update
-));
+safe_symlink("restart", "root/etc/e-smith/events/nethserver-openssh-update/services2adjust/sshd");
+
 
 
