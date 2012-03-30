@@ -3,55 +3,13 @@
 use strict;
 use esmith::Build::CreateLinks qw(:all);
 
-foreach (qw(
-    /etc/ssh/sshd_config
-	))
-{
-    templates2events("$_", qw(
-	console-save
-	bootstrap-console-save
-	remoteaccess-update
-	));
-}
+templates2events("/etc/ssh/sshd_config", qw(
+   nethserver-base-save
+   nethserver-openssh-update
+));
 
-foreach (qw(
-    /etc/rssh.conf
-	))
-{
-    templates2events("$_", qw(
-	bootstrap-console-save
-	password-modify
-	remoteaccess-update
-	user-lock
-	user-create
-	user-delete
-	user-modify
-	));
-}
-
-foreach my $event (
-    "console-save",
-    "bootstrap-console-save",
-    "remoteaccess-update")
-{
-    event_link("sshd-conf", $event, "65");
-}
-
-foreach my $event (
-    "console-save",
-    "remoteaccess-update")
-{
-    safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/sshd");
-}
+safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/sshd") foreach my $event (qw(
+  nethserver-openssh-update
+));
 
 
-#
-# Actions for nethserver-openssh-update event
-#
-
-my $event = "nethserver-openssh-update";
-templates2events("/etc/hosts.allow",$event);
-templates2events("/etc/rssh.conf",$event);
-templates2events("/etc/ssh/sshd_config",$event);
-event_link("sshd-conf", $event, "65");
-safe_symlink("restart", "root/etc/e-smith/events/$event/services2adjust/sshd");
