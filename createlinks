@@ -9,7 +9,7 @@ templates2events("/etc/ssh/sshd_config", qw(
 ));
 
 event_actions('nethserver-openssh-update',
-	      'initialize-default-databases' => '05',
+	      'initialize-default-databases' => '00',
 	      'firewall-adjust' => '30',
 	      'runlevel-adjust' => '40');
 	      
