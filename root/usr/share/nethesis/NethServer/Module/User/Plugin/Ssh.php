@@ -25,24 +25,17 @@ use Nethgui\System\PlatformInterface as Validate;
 /**
  * @todo describe class
  */
-class Ssh extends \Nethgui\Controller\Table\AbstractAction implements \NethServer\Module\User\PluginInterface
+class Ssh extends \Nethgui\Controller\Table\AbstractAction
 {
-
-    private $key;
-
-    public function getParentIdentifier()
+    protected function initializeAttributes(\Nethgui\Module\ModuleAttributesInterface $base)
     {
-        return array("Service", 0);
+        return \Nethgui\Module\SimpleModuleAttributesProvider::extendModuleAttributes($base, 'Service', 10);
     }
-
-    public function setKey($key)
-    {
-        $this->key = $key;
-    }
-
+    
     public function bind(\Nethgui\Controller\RequestInterface $request)
     {
-        $this->declareParameter('ssh', Validate::BOOLEAN, array(array($this->getAdapter(), $this->key, 'Shell')));
+        $key = \Nethgui\array_head($request->getPath());
+        $this->declareParameter('ssh', Validate::BOOLEAN, array(array($this->getAdapter(), $key, 'Shell')));
         parent::bind($request);
     }
 
