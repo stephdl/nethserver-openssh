@@ -21,22 +21,26 @@ namespace NethServer\Module\User\Plugin;
  */
 
 use Nethgui\System\PlatformInterface as Validate;
+use Nethgui\Controller\Table\Modify as Table;
 
 /**
  * @todo describe class
  */
-class Ssh extends \Nethgui\Controller\Table\AbstractAction
+class Ssh extends \Nethgui\Controller\Table\RowPluginAction
 {
     protected function initializeAttributes(\Nethgui\Module\ModuleAttributesInterface $base)
     {
         return \Nethgui\Module\SimpleModuleAttributesProvider::extendModuleAttributes($base, 'Service', 10);
     }
     
-    public function bind(\Nethgui\Controller\RequestInterface $request)
+    public function initialize()
+    
     {
-        $key = \Nethgui\array_head($request->getPath());
-        $this->declareParameter('ssh', Validate::BOOLEAN, array(array($this->getAdapter(), $key, 'Shell')));
-        parent::bind($request);
+        $this->setSchemaAddition(array(
+            array('ssh', Validate::BOOLEAN, Table::FIELD, 'Shell'),
+        ));
+        
+        parent::initialize();
     }
 
     public function readSsh($dbValue)
