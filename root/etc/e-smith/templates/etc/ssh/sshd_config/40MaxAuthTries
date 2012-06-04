@@ -2,7 +2,7 @@
 # MaxAuthTries specifies the maximum number of authentication
 # attempts permitted per connection. Once the number of failures
 # reaches half this value, additional failures are logged. The
-# sshd default is 6 - we consider that too many.
-    my $MaxAuthTries = $sshd{MaxAuthTries} || "2";
+# sshd default is 6. Refs #1170
+    my $MaxAuthTries = $sshd{MaxAuthTries} || "6";
     $OUT = "MaxAuthTries $MaxAuthTries";
 }
