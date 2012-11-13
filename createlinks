@@ -4,13 +4,22 @@ use strict;
 use esmith::Build::CreateLinks qw(:all);
 
 templates2events("/etc/ssh/sshd_config", qw(
-   nethserver-base-save
    nethserver-openssh-update
+   nethserver-openssh-save
 ));
 
-event_actions('nethserver-openssh-update',
-	      'initialize-default-databases' => '00',
-	      'firewall-adjust' => '30',
-	      'runlevel-adjust' => '40');
+event_actions('nethserver-openssh-update', qw(
+	      initialize-default-databases 00
+	      firewall-adjust 30
+	      runlevel-adjust 40
+));
+
+event_services('nethserver-openssh-update', qw(
+               sshd restart
+));
+
+event_services('nethserver-openssh-save', qw(
+               sshd reload
+));
 	      
-safe_symlink("restart", "root/etc/e-smith/events/nethserver-openssh-update/services2adjust/sshd");
+
