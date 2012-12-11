@@ -43,6 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 
+
+
 %changelog
-* Wed Sep 29 2011 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> 2.3.0-1.nh
-- First Nethserver release
+
