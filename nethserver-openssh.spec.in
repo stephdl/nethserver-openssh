@@ -1,7 +1,7 @@
 Summary: Allow user access through sshd server
 Name: nethserver-openssh
 Version: @@VERSION@@
-Release: @@RELEASE@@%{?dist}
+Release: @@RELEASE@@
 License: GPL
 Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
