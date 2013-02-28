@@ -61,5 +61,5 @@ event_services('nethserver-openssh-save', qw(
 # actions for migration-import event
 #--------------------------------------------------
 
-$event = "migration-import";
+my $event = "migration-import";
 event_actions($event, 'nethserver-openssh-migrate' => 40);
