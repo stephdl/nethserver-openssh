@@ -8,6 +8,7 @@ Source: %{name}-%{version}.tar.gz
 BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
 BuildRequires: nethserver-devtools
 BuildArch: noarch
+Requires: openssh-server
 Requires: nethserver-base
 # Requires: rssh -- davidep 20120330 temporarily disabled
 AutoReq: no

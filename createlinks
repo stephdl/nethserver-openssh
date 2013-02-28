@@ -28,6 +28,21 @@ templates2events("/etc/ssh/sshd_config", qw(
    nethserver-openssh-save
 ));
 
+templates2events("/etc/sysconfig/sshd", qw(
+   nethserver-openssh-update
+   nethserver-openssh-save
+));
+
+templates2events("/etc/hosts.allow", qw(
+   nethserver-openssh-update
+   nethserver-openssh-save
+));
+
+templates2events("/etc/hosts.deny", qw(
+   nethserver-openssh-update
+   nethserver-openssh-save
+));
+
 event_actions('nethserver-openssh-update', qw(
 	      initialize-default-databases 00
 	      firewall-adjust 30
