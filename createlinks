@@ -57,4 +57,9 @@ event_services('nethserver-openssh-save', qw(
                sshd reload
 ));
 	      
+#--------------------------------------------------
+# actions for migration-import event
+#--------------------------------------------------
 
+$event = "migration-import";
+event_actions($event, 'nethserver-openssh-migrate' => 40);
