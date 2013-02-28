@@ -1,5 +1,4 @@
-#!/usr/bin/perl 
-
+#!/usr/bin/perl
 #
 # Copyright (C) 2012 Nethesis S.r.l.
 # http://www.nethesis.it - support@nethesis.it
@@ -22,18 +21,4 @@
 
 use strict;
 use NethServer::Service;
-
-my $errors = 0;
-
-#
-# Fix system-config-firewall
-#
-qx(/bin/sed -i '/^--service=ssh/ d' /etc/sysconfig/system-config-firewall);
-if( $? != 0 ) {
-    warn "Failed to remove ssh service from /etc/sysconfig/system-config-firewall\n";
-    $errors ++;
-}
-
-NethServer::Service::manage_add('nethserver-openssh','sshd');
-
-exit($errors == 0 ? 0 : 1);
+NethServer::Service::manage_remove('nethserver-openssh', 'sshd');
