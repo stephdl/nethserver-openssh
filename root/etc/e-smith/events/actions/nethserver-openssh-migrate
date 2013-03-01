@@ -22,6 +22,7 @@
 
 use esmith::DB::db;
 use esmith::event;
+use File::Copy;
 use strict;
 
 my $event = shift;
@@ -36,11 +37,18 @@ my $srcConfigDb = esmith::DB::db->open_ro(join('', $sourceDir, $esmithDbDir, '/c
 
 my $dstConfigDb = esmith::DB::db->open('configuration') || die("Could not open destination account db\n");
 
-
+# copy database properties
 my $service = 'sshd';
 my $old = $srcConfigDb->get($service);
 my $new = $dstConfigDb->get($service) || $dstConfigDb->new_record($service);
 $new->merge_props($old->props);
+
+# copy cryptographic keys
+my @keys = ('ssh_host_dsa_key', 'ssh_host_dsa_key.pub', 'ssh_host_key', 'ssh_host_key.pub', 'ssh_host_rsa_key', 'ssh_host_rsa_key.pub');
+foreach my $key (@keys) {
+    copy("$sourceDir/etc/ssh/$key","/etc/ssh/$key");
+}
+
 
 
 #
