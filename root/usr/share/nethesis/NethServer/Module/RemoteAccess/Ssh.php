@@ -86,6 +86,7 @@ class Ssh extends \Nethgui\Controller\ListComposite
         }
 
         if($this->saveEvent) {
+            $this->getPlatform()->signalEvent('remoteaccess-update@post-process');
             $this->getPlatform()->signalEvent('nethserver-base-save@post-process');
         }
     }
