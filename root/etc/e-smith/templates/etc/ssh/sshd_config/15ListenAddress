@@ -1,23 +1,4 @@
 #
-# 15ListenAddress -- access is { $sshd{'access'} || 'private' }
+# 15ListenAddress
 #
-{
-    use esmith::NetworksDB;
-
-    my $access = $sshd{'access'} || 'private';
-    my $LocalIP;
-
-    if($access eq 'public') {
-	$OUT = 'ListenAddress 0.0.0.0';
-    } else {
-	my $greenInterface = esmith::NetworksDB->open_ro()->green();
-	if($greenInterface) {
-	    $LocalIP = $greenInterface->prop('ipaddr');
-	} else {
-	    $LocalIP = '127.0.0.1';
-	}
-	$OUT = 'ListenAddress ' . $LocalIP;
-    }
-}
-
-
+ListenAddress 0.0.0.0
