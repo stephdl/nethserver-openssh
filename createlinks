@@ -42,7 +42,6 @@ templates2events("/etc/hosts.deny", qw(
 
 event_actions('nethserver-openssh-update', qw(
 	      initialize-default-databases 00
-              nethserver-openssh-conf      02
 ));
 
 event_services('nethserver-openssh-update', qw(
