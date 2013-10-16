@@ -45,6 +45,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Oct 16 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.3-1.ns6
+- Fix expansion of lokkit template #2205
+- SSG daemon should listen on 0.0.0.0 #2138
+- Db defaults: remove Runlevels prop #2067
+
 * Tue Apr 30 2013 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.2-1.ns6
 - Rebuild for automatic package handling. #1870
 - Restart sshd when changing port. #1862
