@@ -1,1 +1,2 @@
-KeepAlive yes
+ClientAliveInterval 60 
+ClientAliveCountMax 3
