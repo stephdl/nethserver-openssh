@@ -21,6 +21,7 @@ Allow user access through sshd server
 %setup
 
 %build
+%{makedocs}
 perl createlinks
 
 %install
