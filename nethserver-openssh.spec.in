@@ -46,6 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 26 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.5-1.ns6
+- Removed fs executable bit from UI language catalogs.
+
 * Wed Feb 05 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.4-1.ns6
 - Default remote access from public networks - Enhancement #2548 [NethServer]
 - SSH: connection keep alive - Enhancement #2147 [NethServer]
