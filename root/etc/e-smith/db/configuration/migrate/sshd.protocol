@@ -1,9 +1,0 @@
-{
-    my $sshd = $DB->get('sshd');
-    return '' unless $sshd;
-    my $protocol = $sshd->prop('Protocol');
-    return '' if $protocol;
-
-    # Add backwards compatible mode for upgrades
-    $sshd->merge_props( Protocol => '2,1' );
-}
