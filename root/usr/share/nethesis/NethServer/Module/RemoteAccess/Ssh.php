@@ -34,7 +34,7 @@ class Ssh extends \Nethgui\Controller\ListComposite
     private $status;
 
     /**
-     * If the nethserver-base-save event must be signalled 
+     * If the event must be signalled 
      * @var bool
      */
     private $saveEvent = FALSE;
@@ -86,8 +86,7 @@ class Ssh extends \Nethgui\Controller\ListComposite
         }
 
         if($this->saveEvent) {
-            $this->getPlatform()->signalEvent('remoteaccess-update@post-process');
-            $this->getPlatform()->signalEvent('nethserver-base-save@post-process');
+            $this->getPlatform()->signalEvent('remoteaccess-update &');
         }
     }
 
