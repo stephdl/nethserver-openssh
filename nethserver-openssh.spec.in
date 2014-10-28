@@ -46,6 +46,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Oct 28 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.7-1.ns6
+- Remote access: web interface error when changing the SSH port - Bug #2847 [NethServer]
+
 * Wed Oct 15 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.6-1.ns6
 - Backup config: list only relevant files - Feature #2739
 
