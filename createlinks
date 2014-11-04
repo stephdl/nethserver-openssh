@@ -29,17 +29,6 @@ templates2events("/etc/ssh/sshd_config", qw(
    remoteaccess-update
 ));
 
-# 
-# FIXME ns6_5 remove hosts.allow/deny on next iso release
-#
-templates2events("/etc/hosts.allow", qw(
-   nethserver-openssh-update
-));
-templates2events("/etc/hosts.deny", qw(
-   nethserver-openssh-update
-));
-
-
 event_actions('nethserver-openssh-update', qw(
 	      initialize-default-databases 00
 ));
