@@ -26,7 +26,6 @@ use esmith::Build::CreateLinks qw(:all);
 templates2events("/etc/ssh/sshd_config", qw(
    nethserver-openssh-update
    nethserver-openssh-save
-   remoteaccess-update
 ));
 
 event_actions('nethserver-openssh-update', qw(
@@ -41,13 +40,6 @@ event_services('nethserver-openssh-save', qw(
                sshd reload
 ));
 	      
-event_services('remoteaccess-update', qw(
-               sshd restart
-));
-
-event_actions('remoteaccess-update', qw(
-              firewall-adjust      20
-));
 
 #--------------------------------------------------
 # actions for migration-import event
