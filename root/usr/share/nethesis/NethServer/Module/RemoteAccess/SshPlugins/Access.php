@@ -23,7 +23,7 @@ namespace NethServer\Module\RemoteAccess\SshPlugins;
 use Nethgui\System\PlatformInterface as Validate;
 
 /**
- * TODO: add component description here
+ * Configure SSH
  *
  * @author Davide Principi <davide.principi@nethesis.it>
  * @since 1.0
@@ -41,7 +41,6 @@ class Access extends \Nethgui\Controller\AbstractController
         parent::initialize();
         $this->declareParameter('passwordAuth', Validate::BOOLEAN, array('configuration', 'sshd', 'PasswordAuthentication'));
         $this->declareParameter('rootLogin', Validate::BOOLEAN, array('configuration', 'sshd', 'PermitRootLogin'));
-        $this->declareParameter('access', $this->createValidator()->memberOf('private', 'public'), array('configuration', 'sshd', 'access'));
     }
 
     protected function onParametersSaved($changes)
