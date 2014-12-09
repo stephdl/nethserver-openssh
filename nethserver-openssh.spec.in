@@ -46,6 +46,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 09 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.8-1.ns6
+- ssh access remains public when set to private - Bug #2970 [NethServer]
+- Release file and MOTD - Enhancement #2845 [NethServer]
+- Drop TCP wrappers hosts.allow hosts.deny templates - Enhancement #2785 [NethServer]
+
 * Tue Oct 28 2014 Davide Principi <davide.principi@nethesis.it> - 1.0.7-1.ns6
 - Remote access: web interface error when changing the SSH port - Bug #2847 [NethServer]
 
