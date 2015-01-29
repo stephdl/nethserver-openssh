@@ -48,7 +48,11 @@ event_templates('nethserver-openssh-save', qw(
 ));
 
 event_services('nethserver-openssh-save', qw(
-               sshd reload
+    sshd reload
+));
+
+event_actions('nethserver-openssh-save', qw(
+    firewall-adjust 95
 ));
 
 #
