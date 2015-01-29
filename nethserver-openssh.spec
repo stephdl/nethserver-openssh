@@ -1,21 +1,20 @@
-Summary: Allow user access through sshd server
 Name: nethserver-openssh
-Version: @@VERSION@@
-Release: @@RELEASE@@
+Summary: sshd daemon configuration
+Version: 1.0.8
+Release: 5%{?dist}
 License: GPL
-Group: System Environment/Base
 Source: %{name}-%{version}.tar.gz
-BuildRoot: /var/tmp/%{name}-%{version}-%{release}-buildroot
-BuildRequires: nethserver-devtools
 BuildArch: noarch
+URL: %{url_prefix}/%{name} 
+
+BuildRequires: nethserver-devtools
+
 Requires: openssh-server
 Requires: nethserver-base
-# Requires: rssh -- davidep 20120330 temporarily disabled
 AutoReq: no
 
-
 %description
-Allow user access through sshd server
+Configure and manage the sshd daemon
 
 %prep
 %setup
@@ -34,16 +33,11 @@ rm -f %{name}-%{version}-%{release}-filelist
 
 echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
 
-%post
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}-%{version}-%{release}-filelist
 %defattr(-,root,root)
-
-
-
 
 %changelog
 * Tue Dec 09 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.8-1.ns6
