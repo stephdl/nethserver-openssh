@@ -23,9 +23,12 @@
 use strict;
 use esmith::Build::CreateLinks qw(:all);
 
-templates2events("/etc/ssh/sshd_config", qw(
-   nethserver-openssh-update
-   nethserver-openssh-save
+#
+# nethserver-openssh-update event
+#
+
+event_templates('nethserver-openssh-update', qw(
+    /etc/ssh/sshd_config
 ));
 
 event_actions('nethserver-openssh-update', qw(
@@ -36,14 +39,22 @@ event_services('nethserver-openssh-update', qw(
                sshd restart
 ));
 
+#
+# nethserver-openssh-save event
+#
+
+event_templates('nethserver-openssh-save', qw(
+    /etc/ssh/sshd_config
+));
+
 event_services('nethserver-openssh-save', qw(
                sshd reload
 ));
-	      
 
-#--------------------------------------------------
-# actions for migration-import event
-#--------------------------------------------------
+#
+# migration-import event
+#
 
-my $event = "migration-import";
-event_actions($event, 'nethserver-openssh-migrate' => 40);
+event_actions('migration-import', qw(
+   nethserver-openssh-migrate 40
+));
