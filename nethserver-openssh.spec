@@ -1,7 +1,7 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.0.8
-Release: 5%{?dist}
+Version: 1.1.0
+Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
 BuildArch: noarch
@@ -40,6 +40,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 
 %changelog
+* Tue Mar 03 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.0-1
+- SSH: locked out of 6.6 beta1 - Bug #3015 [NethServer]
+- Base: first configuration wizard - Feature #2957 [NethServer]
+
 * Tue Dec 09 2014 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.8-1.ns6
 - ssh access remains public when set to private - Bug #2970 [NethServer]
 - Release file and MOTD - Enhancement #2845 [NethServer]
