@@ -6,12 +6,9 @@ License: GPL
 Source: %{name}-%{version}.tar.gz
 BuildArch: noarch
 URL: %{url_prefix}/%{name} 
-
 BuildRequires: nethserver-devtools
-
 Requires: openssh-server
 Requires: nethserver-base
-AutoReq: no
 
 %description
 Configure and manage the sshd daemon
@@ -24,20 +21,15 @@ Configure and manage the sshd daemon
 perl createlinks
 
 %install
-rm -rf $RPM_BUILD_ROOT
-( cd root ; find . -depth -print | cpio -dump $RPM_BUILD_ROOT )
-rm -f %{name}-%{version}-%{release}-filelist
-
-%{genfilelist} $RPM_BUILD_ROOT \
-    > %{name}-%{version}-%{release}-filelist
-
-echo "%doc COPYING" >> %{name}-%{version}-%{release}-filelist
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+( cd root ; find . -depth -print | cpio -dump %{buildroot} )
+%{genfilelist} %{buildroot}  > %{name}-%{version}-%{release}-filelist
 
 %files -f %{name}-%{version}-%{release}-filelist
 %defattr(-,root,root)
+%doc COPYING
+%dir %{_nseventsdir}/%{name}-update
+
 
 %changelog
 * Tue Mar 03 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.0-1
