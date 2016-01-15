@@ -1,6 +1,6 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.1.0
+Version: 1.1.1
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -32,6 +32,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Sep 29 2015 Davide Principi <davide.principi@nethesis.it> - 1.1.1-1
+- Make Italian language pack optional - Enhancement #3265 [NethServer]
+
 * Tue Mar 03 2015 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.1.0-1
 - SSH: locked out of 6.6 beta1 - Bug #3015 [NethServer]
 - Base: first configuration wizard - Feature #2957 [NethServer]
