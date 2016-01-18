@@ -1,5 +1,0 @@
-{
-#
-# For this to work you will also need host keys in /etc/ssh_known_hosts
-}
-RhostsRSAAuthentication no

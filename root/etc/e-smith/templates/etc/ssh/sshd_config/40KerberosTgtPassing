@@ -1,4 +1,0 @@
-{
-# Kerberos TGT Passing does only work with the AFS kaserver
-#KerberosTgtPassing yes
-}
