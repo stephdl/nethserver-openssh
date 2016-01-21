@@ -1,1 +1,0 @@
-SYSLOGD_OPTIONS="$SYSLOGD_OPTIONS -a /var/empty/sshd/dev/log"
