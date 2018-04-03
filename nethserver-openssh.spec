@@ -1,6 +1,6 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.2.1
+Version: 1.2.2
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -32,6 +32,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Apr 03 2018 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.2.2-1
+- Hardening TLS policy 2018-03-30 - NethServer/dev#5438
+
 * Mon Apr 10 2017 Davide Principi <davide.principi@nethesis.it> - 1.2.1-1
 - Add  /root/.ssh directory to backup-config - NethServer/dev#5264
 
