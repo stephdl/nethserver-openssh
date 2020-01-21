@@ -62,3 +62,12 @@ event_actions('nethserver-openssh-save', qw(
 event_actions('migration-import', qw(
    nethserver-openssh-migrate 40
 ));
+
+# nethserver-sssd event, we follow `ShellOverrideStatus`
+event_templates('nethserver-sssd-save', qw(
+    /etc/ssh/sshd_config
+));
+
+event_services('nethserver-sssd-save', qw(
+    sshd restart
+));
