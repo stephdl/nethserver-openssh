@@ -6,7 +6,7 @@
     my $SubsystemSftp = $sshd{"SubsystemSftp"} || "yes";
 
     if ($SubsystemSftp eq "yes") {
-      $OUT .= "Subsystem sftp internal-sftp -u 0077\n";
+      $OUT .= "Subsystem sftp internal-sftp\n";
     } else {
       $OUT .= "# The sftp Subsystem is disabled in the configuration database\n";
     }
