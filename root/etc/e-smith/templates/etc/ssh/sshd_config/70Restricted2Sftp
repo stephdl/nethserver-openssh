@@ -1,6 +1,6 @@
 {
     # restrict groups to sftp, ssh access is refused
-    my $domain = $DomainName || die ('Cannot retrieve DomainName');
+    my $domain = $DomainName;
     my @SftpRestricted = ();
 
     foreach ( split(',',$sshd{'AllowGroups'} || '')) {
@@ -13,7 +13,7 @@
     }
 
     if (@SftpRestricted) {
-        my $matchGroup = join (",", map { $_ } @SftpRestricted);
+        my $matchGroup = join (",",@SftpRestricted);
         $OUT .= "Match Group \"$matchGroup\"\n";
         $OUT .= "    ForceCommand internal-sftp\n";
         $OUT .= "Match All\n";
