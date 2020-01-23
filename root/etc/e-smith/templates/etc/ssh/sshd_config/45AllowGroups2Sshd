@@ -1,0 +1,49 @@
+{
+    # Allow groups to sftp/ssh with different policies
+    #
+    # if $sssd{ShellOverrideStatus} is disabled we are in legacy (everybody is allowed with a shell access)
+    # if $sssd{ShellOverrideStatus} is enabled we allow to root and members of domain admins group
+    # if $sssd{ShellOverrideStatus} is enabled  with non empty $sshd{AllowGroups} 
+    #   we allow root, members of domain admins group and members of groups inside the AllowGroups prop
+    #
+    # members restricted to sftp (SftpRestrictedGroups) must be allowed to sshd also
+
+    sub uniq {
+        my %seen;
+        return grep { !$seen{$_}++ } @_;
+    }
+
+    # ssh doesn't accept to login if we restrict with short group name
+    # It seems to want the long group name group@domain.com
+    my $domain = $DomainName;
+    my $PermitRootLogin = $sshd{'PermitRootLogin'} || "no";
+    my $policy = $sssd{'ShellOverrideStatus'} || "disabled";
+
+    my @AllowGroups = ();
+    foreach ( split(',',$sshd{'AllowGroups'} || '')) {
+        my ($group, $sftp) = split(':', $_);
+
+        if(!$group) {
+            next;
+        }
+        $group .= "\@$domain" if ($group !~ '@');
+        # Spaces are not accepted
+        $group = '"'.$group.'"' if ($group=~ m/ /g);
+        push @AllowGroups, $group;
+    }
+
+    my $admin = $admins{'group'} || 'domain admins';
+    $admin .= "\@$domain" if ($admin !~ '@');
+    # Spaces are not accepted
+    $admin = '"'.$admin.'"' if ($admin=~ m/ /g);
+    
+    if (($policy eq 'enabled') && (!@AllowGroups)) {
+        my $root = ($PermitRootLogin eq "yes") ? "root" : "";
+        $OUT .= "AllowGroups $root $admin\n";
+    }
+    elsif (($policy eq 'enabled') && (@AllowGroups)) {
+        my $root = ($PermitRootLogin eq "yes") ? "root" : "";
+        my @allowedGroup = uniq(@AllowGroups);
+        $OUT .= "AllowGroups $root $admin @allowedGroup\n";
+    }
+}

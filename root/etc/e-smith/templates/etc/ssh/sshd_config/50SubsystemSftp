@@ -5,7 +5,9 @@
 
     my $SubsystemSftp = $sshd{"SubsystemSftp"} || "yes";
 
-    $OUT = ($SubsystemSftp eq "yes") ? 
-	"Subsystem      sftp    /usr/libexec/openssh/sftp-server" : 
-	"# The sftp Subsystem is disabled in the configuration database";
+    if ($SubsystemSftp eq "yes") {
+      $OUT .= "Subsystem sftp internal-sftp\n";
+    } else {
+      $OUT .= "# The sftp Subsystem is disabled in the configuration database\n";
+    }
 }
