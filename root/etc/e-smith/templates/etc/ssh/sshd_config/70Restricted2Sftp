@@ -5,11 +5,21 @@
 
     foreach ( split(',',$sshd{'AllowGroups'} || '')) {
         my ($group, $sftp) = split(':', $_);
-        if(!$group || !$sftp) {
+        if(!$group) {
             next;
         }
+        if (!$sftp) {
+            $sftp = '';
+        }
+
         $group .= "\@$domain" if ($group !~ '@');
-        push @SftpRestricted, $group if ($sftp eq 'sftp');
+        if ($sftp eq 'sftp') {
+            push @SftpRestricted, $group;
+        } else {
+            # the group won't be forced to use sftp
+            # in case of membership of several groups
+            push @SftpRestricted, '!'.$group;
+       }
     }
 
     if (@SftpRestricted) {
