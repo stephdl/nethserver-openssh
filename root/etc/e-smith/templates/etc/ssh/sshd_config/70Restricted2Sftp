@@ -3,6 +3,9 @@
     my $domain = $DomainName;
     my @SftpRestricted = ();
 
+    my $admin = $admins{'group'} || 'domain admins';
+    $admin .= "\@$DomainName" if ($admin !~ '@');
+
     foreach ( split(',',$sshd{'AllowGroups'} || '')) {
         my ($group, $sftp) = split(':', $_);
         if(!$group) {
@@ -23,6 +26,8 @@
     }
 
     if (@SftpRestricted) {
+        #domain admins cannot be forced to SFTP
+        push @SftpRestricted, '!'.$admin;
         my $matchGroup = join (",",@SftpRestricted);
         $OUT .= "Match Group \"$matchGroup\"\n";
         $OUT .= "    ForceCommand internal-sftp\n";
