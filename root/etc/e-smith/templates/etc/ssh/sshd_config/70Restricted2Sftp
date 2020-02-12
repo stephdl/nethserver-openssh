@@ -3,10 +3,9 @@
     my $domain = $DomainName;
     my @SftpRestricted = ();
 
-    my $admin = $admins{'group'} || 'domain admins';
-    $admin .= "\@$DomainName" if ($admin !~ '@');
+    my $admins_group = $admins{'group'} || 'domain admins';
 
-    foreach ( split(',',$sshd{'AllowGroups'} || '')) {
+    foreach ( $admins_group, split(',',$sshd{'AllowGroups'} || '')) {
         my ($group, $sftp) = split(':', $_);
         if(!$group) {
             next;
@@ -19,15 +18,12 @@
         if ($sftp eq 'sftp') {
             push @SftpRestricted, $group;
         } else {
-            # the group won't be forced to use sftp
-            # in case of membership of several groups
+            # do not force SFTP to groups with SSH permission
             push @SftpRestricted, '!'.$group;
        }
     }
 
     if (@SftpRestricted) {
-        #domain admins cannot be forced to SFTP
-        push @SftpRestricted, '!'.$admin;
         my $matchGroup = join (",",@SftpRestricted);
         $OUT .= "Match Group \"$matchGroup\"\n";
         $OUT .= "    ForceCommand internal-sftp\n";
