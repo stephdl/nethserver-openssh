@@ -13,6 +13,8 @@
     }
 
     if (@SftpRestricted) {
+        unshift @SftpRestricted,('*','!root') if (/^Everyone/ ~~ @SftpRestricted);
+        @SftpRestricted = grep { $_  !~ /Everyone/ } @SftpRestricted;
         my $matchGroup = join (",",@SftpRestricted);
         $OUT .= "Match Group \"$matchGroup\"\n";
         $OUT .= "    ForceCommand internal-sftp\n";
