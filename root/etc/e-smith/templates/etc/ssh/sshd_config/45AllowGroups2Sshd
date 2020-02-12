@@ -36,8 +36,11 @@
     $admin .= "\@$domain" if ($admin !~ '@');
     # Spaces are not accepted
     $admin = '"'.$admin.'"' if ($admin=~ m/ /g);
-    
-    if (($policy eq 'enabled') && (!@AllowGroups)) {
+
+    if ((grep {$_ eq "Everyone\@$domain" } @AllowGroups) && ($policy eq 'enabled')) {
+        return '';
+    }
+    elsif (($policy eq 'enabled') && (!@AllowGroups)) {
         my $root = ($PermitRootLogin eq "yes") ? "root" : "";
         $OUT .= "AllowGroups $root $admin\n";
     }
