@@ -2,6 +2,7 @@
     # restrict groups to sftp, ssh access is refused
     my $domain = $DomainName;
     my @SftpRestricted = ();
+    my @SftpUnRestricted = ();
 
     my $admins_group = $admins{'group'} || 'domain admins';
 
@@ -19,27 +20,18 @@
             push @SftpRestricted, $group;
         } else {
             # do not force SFTP to groups with SSH permission
-            push @SftpRestricted, '!'.$group;
+            push @SftpUnRestricted, $group;
        }
     }
 
-    if (grep {$_ eq "Everyone\@$domain"} @SftpRestricted) {
-        # We allow to everyone, each group is listed if starts by `!`
-        @SftpUnRestricted = join (',',grep { $_ =~ /^!/ } @SftpRestricted);
-        # The condition must match the group
-        map {s/!//g; } @SftpUnRestricted;
-        $OUT .= "Match Group \"@SftpUnRestricted,root\"\n";
+    if (@SftpRestricted && (!grep {$_ eq "Everyone\@$domain"} @SftpUnRestricted) ) {
+        # everyone is restricted to sftp except root and SftpUnRestricted
+        @SftpUnRestricted = join (",",@SftpUnRestricted);
+        $OUT .= "Match Group \"root,@SftpUnRestricted\"\n";
         $OUT .= "    ForceCommand none\n";
         $OUT .= "Match All\n";
         $OUT .= "    ForceCommand internal-sftp\n";
-    } elsif (@SftpRestricted) {
-        # Everyone is not restricted to SFTP
-        @SftpRestricted = grep { $_ ne "!Everyone\@$domain" } @SftpRestricted;
-        my $matchGroup = join (",",@SftpRestricted);
-        $OUT .= "Match Group \"$matchGroup\"\n";
-        $OUT .= "    ForceCommand internal-sftp\n";
-        $OUT .= "Match All\n";
     } else {
-        $OUT .= "# We have no groups restricted to sftp";
+        return  "";
     }
 }
