@@ -37,7 +37,10 @@
     # Spaces are not accepted
     $admin = '"'.$admin.'"' if ($admin=~ m/ /g);
     
-    if (($policy eq 'enabled') && (!@AllowGroups)) {
+    if ((/Everyone/ ~~ @AllowGroups) && ($policy eq 'enabled')) {
+      $OUT .= "# Everyone is allowed to use SSH but groups may be restricted to SFTP\n";
+    }
+    elsif (($policy eq 'enabled') && (!@AllowGroups)) {
         my $root = ($PermitRootLogin eq "yes") ? "root" : "";
         $OUT .= "AllowGroups $root $admin\n";
     }
