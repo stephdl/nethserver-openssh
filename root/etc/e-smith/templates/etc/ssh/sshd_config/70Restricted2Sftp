@@ -23,7 +23,18 @@
        }
     }
 
-    if (@SftpRestricted) {
+    if (grep {$_ eq "Everyone\@$domain"} @SftpRestricted) {
+        # We allow to everyone, each group is listed if starts by `!`
+        @SftpUnRestricted = join (',',grep { $_ =~ /^!/ } @SftpRestricted);
+        # The condition must match the group
+        map {s/!//g; } @SftpUnRestricted;
+        $OUT .= "Match Group \"@SftpUnRestricted,root\"\n";
+        $OUT .= "    ForceCommand none\n";
+        $OUT .= "Match All\n";
+        $OUT .= "    ForceCommand internal-sftp\n";
+    } elsif (@SftpRestricted) {
+        # Everyone is not restricted to SFTP
+        @SftpRestricted = grep { $_ ne "!Everyone\@$domain" } @SftpRestricted;
         my $matchGroup = join (",",@SftpRestricted);
         $OUT .= "Match Group \"$matchGroup\"\n";
         $OUT .= "    ForceCommand internal-sftp\n";
