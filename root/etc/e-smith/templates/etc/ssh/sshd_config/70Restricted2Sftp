@@ -1,5 +1,7 @@
 {
     # restrict groups to sftp, ssh access is refused
+    return "" if ($sssd{'ShellOverrideStatus'} ne 'enabled');
+
     my $domain = $DomainName;
     my @SftpRestricted = ();
     my @SftpUnRestricted = ();
@@ -25,13 +27,14 @@
     }
 
     if (@SftpRestricted && (!grep {$_ eq "Everyone\@$domain"} @SftpUnRestricted) ) {
-        # everyone is restricted to sftp except root and SftpUnRestricted
+        # We list non restricted group to SFTP
         @SftpUnRestricted = join (",",@SftpUnRestricted);
         $OUT .= "Match Group \"root,@SftpUnRestricted\"\n";
         $OUT .= "    ForceCommand none\n";
         $OUT .= "Match All\n";
         $OUT .= "    ForceCommand internal-sftp\n";
     } else {
+        # Everyone is allowed to SSH & SFTP
         return  "";
     }
 }
