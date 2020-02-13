@@ -33,6 +33,8 @@
         $OUT .= "    ForceCommand none\n";
         $OUT .= "Match All\n";
         $OUT .= "    ForceCommand internal-sftp\n";
+        $OUT .= "    AllowTCPForwarding no\n";
+        $OUT .= "    X11Forwarding no\n";
     } else {
         # Everyone is allowed to SSH & SFTP
         return  "";
