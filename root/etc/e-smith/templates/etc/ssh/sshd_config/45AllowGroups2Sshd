@@ -8,6 +8,9 @@
     #
     # members restricted to sftp (SftpRestrictedGroups) must be allowed to sshd also
 
+    # check if new policy is ON
+    return "" if ($sssd{'ShellOverrideStatus'} ne 'enabled');
+
     sub uniq {
         my %seen;
         return grep { !$seen{$_}++ } @_;
@@ -17,7 +20,6 @@
     # It seems to want the long group name group@domain.com
     my $domain = $DomainName;
     my $PermitRootLogin = $sshd{'PermitRootLogin'} || "no";
-    my $policy = $sssd{'ShellOverrideStatus'} || "disabled";
 
     my @AllowGroups = ();
     foreach ( split(',',$sshd{'AllowGroups'} || '')) {
@@ -37,15 +39,15 @@
     # Spaces are not accepted
     $admin = '"'.$admin.'"' if ($admin=~ m/ /g);
 
-    if ((($sshd{'AllowEveryone'} eq 'sftp+ssh') || ($sshd{'AllowEveryone'} eq 'sftp')) && ($policy eq 'enabled')) {
+    if (($sshd{'AllowEveryone'} eq 'sftp+ssh') || ($sshd{'AllowEveryone'} eq 'sftp')) {
         # Everyone is allowed to use the SSHD service
         return '';
     }
-    elsif (($policy eq 'enabled') && (!@AllowGroups)) {
+    elsif (!@AllowGroups) {
         my $root = ($PermitRootLogin eq "yes") ? "root" : "";
         $OUT .= "AllowGroups $root $admin\n";
     }
-    elsif (($policy eq 'enabled') && (@AllowGroups)) {
+    elsif (@AllowGroups) {
         my $root = ($PermitRootLogin eq "yes") ? "root" : "";
         my @allowedGroup = uniq(@AllowGroups);
         $OUT .= "AllowGroups $root $admin @allowedGroup\n";
