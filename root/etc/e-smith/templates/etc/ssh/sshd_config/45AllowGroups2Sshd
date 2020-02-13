@@ -37,7 +37,8 @@
     # Spaces are not accepted
     $admin = '"'.$admin.'"' if ($admin=~ m/ /g);
 
-    if ((grep {$_ eq "Everyone\@$domain" } @AllowGroups) && ($policy eq 'enabled')) {
+    if ((($sshd{'AllowEveryone'} eq 'sftp+ssh') || ($sshd{'AllowEveryone'} eq 'sftp')) && ($policy eq 'enabled')) {
+        # Everyone is allowed to use the SSHD service
         return '';
     }
     elsif (($policy eq 'enabled') && (!@AllowGroups)) {
