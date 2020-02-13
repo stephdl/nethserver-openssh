@@ -26,17 +26,32 @@
        }
     }
 
-    if (@SftpRestricted && (!grep {$_ eq "Everyone\@$domain"} @SftpUnRestricted) ) {
+   if ($sshd{'AllowEveryone'} eq 'sftp+ssh') {
+        # Everyone is allowed to SSH & SFTP
+        return  "";
+    } 
+    elsif (@SftpRestricted && ($sshd{'AllowEveryone'} eq 'none')) {
         # We list non restricted group to SFTP
         @SftpUnRestricted = join (",",@SftpUnRestricted);
+        # We list restricted group to SFTP
+        @SftpRestricted = join (",",@SftpRestricted);
+
+        $OUT .= "Match Group \"root,@SftpUnRestricted\"\n";
+        $OUT .= "    ForceCommand none\n";
+        $OUT .= "Match Group \"@SftpRestricted\"\n";
+        $OUT .= "    ForceCommand internal-sftp\n";
+        $OUT .= "    AllowTCPForwarding no\n";
+        $OUT .= "    X11Forwarding no\n";
+
+    } elsif ($sshd{'AllowEveryone'} eq 'sftp') {
+        # We list non restricted group to SFTP
+        @SftpUnRestricted = join (",",@SftpUnRestricted);
+
         $OUT .= "Match Group \"root,@SftpUnRestricted\"\n";
         $OUT .= "    ForceCommand none\n";
         $OUT .= "Match All\n";
         $OUT .= "    ForceCommand internal-sftp\n";
         $OUT .= "    AllowTCPForwarding no\n";
         $OUT .= "    X11Forwarding no\n";
-    } else {
-        # Everyone is allowed to SSH & SFTP
-        return  "";
     }
 }
