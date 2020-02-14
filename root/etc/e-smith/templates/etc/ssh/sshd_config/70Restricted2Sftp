@@ -1,6 +1,8 @@
 {
     # restrict groups to sftp, ssh access is refused
-    return "" if ($sssd{'ShellOverrideStatus'} ne 'enabled');
+    if ( $sssd{'ShellOverrideStatus'} ne 'enabled' || $sshd{'AllowEveryone'} eq 'sftp+ssh') {
+        return '';
+    }
 
     my $domain = $DomainName;
     my @SftpRestricted = ();
@@ -26,32 +28,14 @@
        }
     }
 
-   if ($sshd{'AllowEveryone'} eq 'sftp+ssh') {
-        # Everyone is allowed to SSH & SFTP
-        return  "";
-    } 
-    elsif (@SftpRestricted && ($sshd{'AllowEveryone'} eq 'none')) {
-        # We list non restricted group to SFTP
-        @SftpUnRestricted = join (",",@SftpUnRestricted);
-        # We list restricted group to SFTP
-        @SftpRestricted = join (",",@SftpRestricted);
-
-        $OUT .= "Match Group \"root,@SftpUnRestricted\"\n";
-        $OUT .= "    ForceCommand none\n";
-        $OUT .= "Match Group \"@SftpRestricted\"\n";
-        $OUT .= "    ForceCommand internal-sftp\n";
-        $OUT .= "    AllowTCPForwarding no\n";
-        $OUT .= "    X11Forwarding no\n";
-
-    } elsif ($sshd{'AllowEveryone'} eq 'sftp') {
-        # We list non restricted group to SFTP
-        @SftpUnRestricted = join (",",@SftpUnRestricted);
-
-        $OUT .= "Match Group \"root,@SftpUnRestricted\"\n";
-        $OUT .= "    ForceCommand none\n";
-        $OUT .= "Match All\n";
-        $OUT .= "    ForceCommand internal-sftp\n";
-        $OUT .= "    AllowTCPForwarding no\n";
-        $OUT .= "    X11Forwarding no\n";
-    }
+    # We list non restricted group to SFTP
+    my $match_group_exp = join(",", 'root', @SftpUnRestricted);
+    $OUT .= qq(Match Group "$match_group_exp"\n);
+    $OUT .= "    ForceCommand none\n";
+    $OUT .= "    AllowTCPForwarding yes\n";
+    $OUT .= "    X11Forwarding yes\n";
+    $OUT .= "Match All\n";
+    $OUT .= "    ForceCommand internal-sftp\n";
+    $OUT .= "    AllowTCPForwarding no\n";
+    $OUT .= "    X11Forwarding no\n";
 }
