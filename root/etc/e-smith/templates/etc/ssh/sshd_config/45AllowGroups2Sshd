@@ -3,13 +3,13 @@
     #
     # if $sssd{ShellOverrideStatus} is disabled we are in legacy (everybody is allowed with a shell access)
     # if $sssd{ShellOverrideStatus} is enabled we allow to root and members of domain admins group
-    # if $sssd{ShellOverrideStatus} is enabled  with non empty $sshd{AllowGroups} 
+    # if $sssd{ShellOverrideStatus} is enabled  with non empty $sshd{AllowGroups}
     #   we allow root, members of domain admins group and members of groups inside the AllowGroups prop
     #
     # members restricted to sftp (SftpRestrictedGroups) must be allowed to sshd also
 
     # check if new policy is ON
-    return "" if ($sssd{'ShellOverrideStatus'} ne 'enabled');
+    return "" if (($sssd{'ShellOverrideStatus'} ne 'enabled') || ($sshd{'AllowEveryone'} ne 'none'));
 
     sub uniq {
         my %seen;
@@ -38,18 +38,8 @@
     $admin .= "\@$domain" if ($admin !~ '@');
     # Spaces are not accepted
     $admin = '"'.$admin.'"' if ($admin=~ m/ /g);
+    push @AllowGroups, $admin;
 
-    if (($sshd{'AllowEveryone'} eq 'sftp+ssh') || ($sshd{'AllowEveryone'} eq 'sftp')) {
-        # Everyone is allowed to use the SSHD service
-        return '';
-    }
-    elsif (!@AllowGroups) {
-        my $root = ($PermitRootLogin eq "yes") ? "root" : "";
-        $OUT .= "AllowGroups $root $admin\n";
-    }
-    elsif (@AllowGroups) {
-        my $root = ($PermitRootLogin eq "yes") ? "root" : "";
-        my @allowedGroup = uniq(@AllowGroups);
-        $OUT .= "AllowGroups $root $admin @allowedGroup\n";
-    }
+    my @allowedGroup = uniq(@AllowGroups);
+    $OUT .= "AllowGroups root @allowedGroup\n";
 }
