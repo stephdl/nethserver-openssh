@@ -5,7 +5,6 @@
     }
 
     my $domain = $DomainName;
-    my @SftpRestricted = ();
     my @SftpUnRestricted = ();
 
     my $admins_group = $admins{'group'} || 'domain admins';
@@ -20,12 +19,10 @@
         }
 
         $group .= "\@$domain" if ($group !~ '@');
-        if ($sftp eq 'sftp') {
-            push @SftpRestricted, $group;
-        } else {
+        if ($sftp eq '') {
             # do not force SFTP to groups with SSH permission
             push @SftpUnRestricted, $group;
-       }
+        }
     }
 
     # We list non restricted group to SFTP

@@ -20,9 +20,10 @@
     # It seems to want the long group name group@domain.com
     my $domain = $DomainName;
     my $PermitRootLogin = $sshd{'PermitRootLogin'} || "no";
+    my $admin = $admins{'group'} || 'domain admins';
 
     my @AllowGroups = ();
-    foreach ( split(',',$sshd{'AllowGroups'} || '')) {
+    foreach ( $admin, split(',',$sshd{'AllowGroups'} || '')) {
         my ($group, $sftp) = split(':', $_);
 
         if(!$group) {
@@ -33,12 +34,6 @@
         $group = '"'.$group.'"' if ($group=~ m/ /g);
         push @AllowGroups, $group;
     }
-
-    my $admin = $admins{'group'} || 'domain admins';
-    $admin .= "\@$domain" if ($admin !~ '@');
-    # Spaces are not accepted
-    $admin = '"'.$admin.'"' if ($admin=~ m/ /g);
-    push @AllowGroups, $admin;
 
     my @allowedGroup = uniq(@AllowGroups);
     $OUT .= "AllowGroups root @allowedGroup\n";
