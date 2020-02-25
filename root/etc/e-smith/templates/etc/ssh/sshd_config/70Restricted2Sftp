@@ -1,23 +1,38 @@
 {
     # restrict groups to sftp, ssh access is refused
-    my $domain = $DomainName;
-    my @SftpRestricted = ();
+    if ( $sssd{'ShellOverrideStatus'} ne 'enabled' || $sshd{'AllowEveryone'} eq 'sftp+ssh') {
+        return '';
+    }
 
-    foreach ( split(',',$sshd{'AllowGroups'} || '')) {
+    my $domain = $DomainName;
+    my @SftpUnRestricted = ();
+
+    my $admins_group = $admins{'group'} || 'domain admins';
+
+    foreach ( $admins_group, split(',',$sshd{'AllowGroups'} || '')) {
         my ($group, $sftp) = split(':', $_);
-        if(!$group || !$sftp) {
+        if(!$group) {
             next;
         }
+        if (!$sftp) {
+            $sftp = '';
+        }
+
         $group .= "\@$domain" if ($group !~ '@');
-        push @SftpRestricted, $group if ($sftp eq 'sftp');
+        if ($sftp eq '') {
+            # do not force SFTP to groups with SSH permission
+            push @SftpUnRestricted, $group;
+        }
     }
 
-    if (@SftpRestricted) {
-        my $matchGroup = join (",",@SftpRestricted);
-        $OUT .= "Match Group \"$matchGroup\"\n";
-        $OUT .= "    ForceCommand internal-sftp\n";
-        $OUT .= "Match All\n";
-    } else {
-        $OUT .= "# We have no groups restricted to sftp";
-    }
+    # We list non restricted group to SFTP
+    my $match_group_exp = join(",", 'root', @SftpUnRestricted);
+    $OUT .= qq(Match Group "$match_group_exp"\n);
+    $OUT .= "    ForceCommand none\n";
+    $OUT .= "    AllowTCPForwarding yes\n";
+    $OUT .= "    X11Forwarding yes\n";
+    $OUT .= "Match All\n";
+    $OUT .= "    ForceCommand internal-sftp\n";
+    $OUT .= "    AllowTCPForwarding no\n";
+    $OUT .= "    X11Forwarding no\n";
 }
