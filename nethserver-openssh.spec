@@ -1,6 +1,6 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.4.0
+Version: 1.4.1
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -32,6 +32,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Feb 27 2020 Davide Principi <davide.principi@nethesis.it> - 1.4.1-1
+- SSH login failure with conflicting group permissions - Bug NethServer/dev#6058
+- Allow everyone to use SFTP and restrict SSH port forwarding - NethServer/dev#6059
+
 * Wed Jan 29 2020 Davide Principi <davide.principi@nethesis.it> - 1.4.0-1
 - Group-based access restriction for Cockpit and SSH  - NethServer/dev#6029
 
