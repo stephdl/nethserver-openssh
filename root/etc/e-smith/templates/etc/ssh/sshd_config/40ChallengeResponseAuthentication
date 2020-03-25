@@ -1,1 +1,6 @@
-ChallengeResponseAuthentication no
+{ # To enable keyboard-interactive" userauth method , change to yes here!
+    my $PasswordAuthentication = $sshd{'PasswordAuthentication'} || 'no';
+
+    $OUT = "ChallengeResponseAuthentication ";
+    $OUT .= ($PasswordAuthentication eq "yes") ? "yes" : "no";
+}

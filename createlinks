@@ -29,6 +29,7 @@ use esmith::Build::CreateLinks qw(:all);
 
 event_templates('nethserver-openssh-update', qw(
     /etc/ssh/sshd_config
+    /etc/pam.d/sshd
 ));
 
 event_actions('nethserver-openssh-update', qw(
@@ -45,6 +46,7 @@ event_services('nethserver-openssh-update', qw(
 
 event_templates('nethserver-openssh-save', qw(
     /etc/ssh/sshd_config
+    /etc/pam.d/sshd
 ));
 
 event_services('nethserver-openssh-save', qw(
@@ -70,4 +72,12 @@ event_templates('nethserver-sssd-save', qw(
 
 event_services('nethserver-sssd-save', qw(
     sshd restart
+));
+
+#
+# otp-save
+#
+
+event_templates('otp-save', qw(
+    /etc/nethserver/sshd.otp.force
 ));
