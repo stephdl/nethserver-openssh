@@ -1,6 +1,6 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.4.1
+Version: 1.5.0
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -32,6 +32,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Mar 25 2020 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.5.0-1
+- Openssh: Protect password login with 2FA - NethServer/dev#6088
+
 * Thu Feb 27 2020 Davide Principi <davide.principi@nethesis.it> - 1.4.1-1
 - SSH login failure with conflicting group permissions - Bug NethServer/dev#6058
 - Allow everyone to use SFTP and restrict SSH port forwarding - NethServer/dev#6059
