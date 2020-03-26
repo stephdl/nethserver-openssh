@@ -1,6 +1,6 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.5.0
+Version: 1.5.1
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -33,6 +33,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Mar 26 2020 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.5.1-1
+- 2FA: can't login with SSH when 2FA is disabled - Bug NethServer/dev#6097
+
 * Wed Mar 25 2020 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.5.0-1
 - Openssh: Protect password login with 2FA - NethServer/dev#6088
 
