@@ -1,6 +1,6 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.5.2
+Version: 1.6.0
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -33,6 +33,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jul 07 2020 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.6.0-1
+- OpenSSH: Use strong encryption - NethServer/dev#6218
+
 * Wed Apr 08 2020 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.5.2-1
 - 2FA not completely restored after disaster recovery - Bug NethServer/dev#6109
 
