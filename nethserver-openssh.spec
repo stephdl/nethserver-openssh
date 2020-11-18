@@ -1,6 +1,6 @@
 Name: nethserver-openssh
 Summary: sshd daemon configuration
-Version: 1.7.0
+Version: 1.8.0
 Release: 1%{?dist}
 License: GPL
 Source: %{name}-%{version}.tar.gz
@@ -33,6 +33,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Nov 18 2020 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.8.0-1
+- New NethServer 7.9.2009 defaults - NethServer/dev#6320
+
 * Tue Sep 29 2020 Davide Principi <davide.principi@nethesis.it> - 1.7.0-1
 - SSH access for local groups - NethServer/dev#6279
 
